@@ -1,32 +1,43 @@
 
-keys_global = {
+keys_global = 
+{
+    // NOTE(rjf): Meta
+    { "exit_4coder",                     "F4", "Alt" },
     { "keyboard_macro_start_recording",  "U", "Command" },
     { "keyboard_macro_finish_recording", "U", "Command", "Shift" },
     { "keyboard_macro_replay",           "U", "Control" },
-    { "change_active_panel",           "Comma", "Command" },
-    { "change_active_panel_backwards", "Comma", "Command", "Shift" },
-    { "interactive_new",               "N", "Command" },
-    { "interactive_open_or_new",       "O", "Command" },
-    { "open_in_other",                 "O", "Control" },
-    { "interactive_kill_buffer",       "K", "Command" },
-    { "interactive_switch_buffer",     "I", "Command" },
+    { "change_active_panel",             "Comma", "Command" },
+    { "change_active_panel_backwards",   "Comma", "Command", "Shift" },
     { "project_go_to_root_directory",  "H", "Command" },
-    { "save_all_dirty_buffers",        "S", "Command", "Shift" },
     { "change_to_build_panel",         "Period", "Control" },
     { "close_build_panel",             "Comma", "Control" },
+    { "f4_toggle_compilation_expand",    "Insert" },
+    { "f4_switch_syntax_option",         "Tick", "Control" },
+
+    // NOTE(rjf): Files
+    { "interactive_new",                       "N", "Command" },
+    { "interactive_open_or_new",               "O", "Command" },
+    { "interactive_kill_buffer",               "K", "Command" },
+    { "interactive_switch_buffer",             "I", "Command" },
+    { "save_all_dirty_buffers",                "S", "Command", "Shift" },
+    { "f4_setup_new_project",                  "N", "Command", "Shift" },
+    { "f4_interactive_open_or_new_in_project", "O", "Alt" },
+    { "f4_open_project",                       "O", "Command", "Shift" },
+    { "f4_recent_files_menu",                  "V", "Control" },
+
+    // NOTE(rjf): Jump Lists
     { "goto_next_jump",                "N", "Control" },
     { "goto_prev_jump",                "N", "Control", "Shift" },
-    { "build_in_build_panel",          "M", "Control" },
     { "goto_first_jump",               "M", "Control", "Shift" },
-    { "toggle_filebar",                "B", "Control" },
+
+    // NOTE(rjf): Commands
     { "execute_any_cli",               "Z", "Control" },
     { "execute_previous_cli",          "Z", "Control", "Shift" },
     { "command_lister",                "X", "Control" },
+
+    // NOTE(rjf): Project
+    { "build_in_build_panel",          "M", "Control" },
     { "project_command_lister",        "X", "Control", "Shift" },
-    { "quick_swap_buffer",             "BackwardSlash", "Control" },
-    { "jump_to_last_point",            "P", "Command" },
-    { "list_all_functions_current_buffer_lister", "I", "Command", "Shift" },
-    { "exit_4coder",          "F4", "Alt" },
     { "project_fkey_command", "F1" },
     { "project_fkey_command", "F2" },
     { "project_fkey_command", "F3" },
@@ -43,11 +54,38 @@ keys_global = {
     { "project_fkey_command", "F14" },
     { "project_fkey_command", "F15" },
     { "project_fkey_command", "F16" },
+
+    // NOTE(rjf): Panels
+    { "open_panel_vsplit", "P", "Control" },
+    { "open_panel_hsplit", "Minus", "Control" },
+    { "close_panel", "P", "Control", "Shift" },
+    { "jump_to_last_point", "J", "Alt" },
+    { "f4_search_for_definition__project_wide", "J", "Control" },
+    { "f4_search_for_definition__current_file", "J", "Control", "Shift" },
+
+    // NOTE(bbt): Misc.
+    { "open_in_other",                 "O", "Control" },
+    { "toggle_filebar",                "B", "Control" },
+    { "quick_swap_buffer",             "BackwardSlash", "Control" },
+    { "jump_to_last_point",            "P", "Command" },
+    { "list_all_functions_current_buffer_lister", "I", "Command", "Shift" },
 };
 
 keys_file = {
     { "delete_char",            "Delete" },
+    { "f4_delete_token_boundary",                     "Delete",    "Control" },
+    { "f4_delete_alpha_numeric_or_camel_boundary",    "Delete",    "Alt"     },
+
     { "backspace_char",         "Backspace" },
+    { "f4_backspace_token_boundary",                  "Backspace", "Control" },
+    { "f4_backspace_alpha_numeric_or_camel_boundary", "Backspace", "Alt"     },
+
+    // NOTE(rjf): Left/Right Arrow Keys
+    { "f4_move_left",                               "Left"              },
+    { "f4_move_left_token_boundary",                "Left", "Control"   },
+    { "f4_move_right",                              "Right"             },
+    { "f4_move_right_token_boundary",               "Right", "Control"  },
+
     { "move_up",                "Up" },
     { "move_down",              "Down" },
     { "move_left",              "Left" },
@@ -75,7 +113,7 @@ keys_file = {
     { "delete_line",                 "D", "Command", "Shift" },
     { "center_view",                 "E", "Command" },
     { "left_adjust_view",            "E", "Command", "Shift" },
-    { "search",                      "F", "Command" },
+    { "f4_search",                      "F", "Command" },
     { "list_all_locations",          "F", "Command", "Shift" },
     { "list_all_substring_locations_case_insensitive", "F", "Control" },
     { "goto_line",                   "G", "Command" },
@@ -88,7 +126,7 @@ keys_file = {
     { "query_replace",               "Q", "Command" },
     { "query_replace_identifier",    "Q", "Command", "Shift" },
     { "query_replace_selection",     "Q", "Control" },
-    { "reverse_search",              "R", "Command" },
+    { "f4_reverse_search",              "R", "Command" },
     { "save",                        "S", "Command" },
     { "save_all_dirty_buffers",      "S", "Command", "Shift" },
     { "search_identifier",           "T", "Command" },
@@ -103,15 +141,27 @@ keys_file = {
     { "if_read_only_goto_position",  "Return" },
     { "if_read_only_goto_position_same_panel", "Return", "Shift" },
     { "view_jump_list_with_lister",  "Period", "Command", "Shift" },
+
+    // NOTE(rjf): Code Peek
+    { "f4_code_peek",          "Tick",  "Alt" },
+    { "f4_code_peek_yank",     "Tab", "Control" },
+    { "f4_code_peek_clear",    "Shift", "Alt" },
+
+    // NOTE(rjf): Helpers
+    { "f4_write_zero_struct",  "0", "Control" },
+    { "f4_toggle_enclosure_side",  "Semicolon", "Alt" },
 };
 
 keys_code = {
+    { "f4_comment_selection",       "Semicolon", "Control" },
+    { "f4_uncomment_selection",     "Semicolon", "Control", "Shift", },
+    { "f4_autocomplete_or_indent",  "Tab" },
+    { "f4_unindent",                "Tab", "Shift" },
+
     { "move_left_alpha_numeric_boundary",           "Left", "Command" },
     { "move_right_alpha_numeric_boundary",          "Right", "Command" },
     { "move_left_alpha_numeric_or_camel_boundary",  "Left", "Control" },
     { "move_right_alpha_numeric_or_camel_boundary", "Right", "Control" },
-    { "comment_line_toggle",        "Semicolon", "Command" },
-    { "word_complete",              "Tab" },
     { "auto_indent_range",          "Tab", "Command" },
     { "auto_indent_line_at_cursor", "Tab", "Shift" },
     { "word_complete_drop_down",    "Tab", "Shift", "Command" },
