@@ -73,6 +73,7 @@ typedef u32 Arch_Code;
 enum{
     Arch_X64,
     Arch_X86,
+    Arch_ARM64,
     
     //
     Arch_COUNT,
@@ -82,6 +83,7 @@ enum{
 char *arch_names[] = {
     "x64",
     "x86",
+    "arm64",
 };
 
 #if OS_WINDOWS
@@ -209,6 +211,7 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
     }
     
     switch (arch){
+        case Arch_ARM64:
         case Arch_X64: fm_add_to_line(line, "-DFTECH_64_BIT"); break;
         case Arch_X86: fm_add_to_line(line, "-DFTECH_32_BIT"); break;
         default: InvalidPath;
@@ -224,6 +227,7 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
     
     if (flags & LIBS){
         switch (arch){
+            case Arch_ARM64: fm_add_to_line(line, CL_LIBS_ARM64); break;
             case Arch_X64: fm_add_to_line(line, CL_LIBS_X64); break;
             case Arch_X86: fm_add_to_line(line, CL_LIBS_X86); break;
             default: InvalidPath;
@@ -262,6 +266,7 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
     
     fm_add_to_line(line, "-link -INCREMENTAL:NO -RELEASE -PDBALTPATH:%%_PDB%%");
     switch (arch){
+        case Arch_ARM64: fm_add_to_line(line, "-MACHINE:ARM64"); break;
         case Arch_X64: fm_add_to_line(line, "-MACHINE:X64"); break;
         case Arch_X86: fm_add_to_line(line, "-MACHINE:X86"); break;
         default: InvalidPath;
@@ -312,6 +317,7 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
 "-lGL -ldl -lXfixes -lfreetype -lfontconfig"
 
 # define GCC_LIBS_X64 GCC_LIBS_COMMON
+# define GCC_LIBS_ARM64 GCC_LIBS_COMMON "-lbz2 -lz "
 # define GCC_LIBS_X86 GCC_LIBS_COMMON
 
 #else
@@ -324,6 +330,7 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
     fm_init_build_line(&line);
     
     switch (arch){
+        case Arch_ARM64:
         case Arch_X64:
         fm_add_to_line(line, "-m64");
         fm_add_to_line(line, "-DFTECH_64_BIT"); break;
@@ -375,6 +382,9 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
         if (arch == Arch_X64){
             fm_add_to_line(line, GCC_LIBS_X64);
         }
+        else if (arch == Arch_ARM64){
+            fm_add_to_line(line, GCC_LIBS_ARM64);
+        }
         else if (arch == Arch_X86)
         {
             fm_add_to_line(line, GCC_LIBS_X86);
@@ -407,6 +417,11 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
 #define CLANG_LIBS_X64 CLANG_LIBS_COMMON \
 FOREIGN "/x64/libfreetype-mac.a"
 
+#define CLANG_LIBS_ARM64 CLANG_LIBS_COMMON \
+FOREIGN "/arm64/libfreetype-mac.a " \
+FOREIGN "/arm64/libbz2-mac.a " \
+FOREIGN "/arm64/libz-mac.a "
+
 #define CLANG_LIBS_X86 CLANG_LIBS_COMMON \
 FOREIGN "/x86/libfreetype-mac.a"
 
@@ -420,6 +435,7 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
     fm_init_build_line(&line);
     
     switch (arch){
+        case Arch_ARM64:
         case Arch_X64:
         fm_add_to_line(line, "-m64");
         fm_add_to_line(line, "-DFTECH_64_BIT"); break;
@@ -470,6 +486,9 @@ build(Arena *arena, u32 flags, u32 arch, char *code_path, char **code_files, cha
     if (flags & LIBS){
         if (arch == Arch_X64){
             fm_add_to_line(line, CLANG_LIBS_X64);
+        }
+        else if (arch == Arch_ARM64){
+            fm_add_to_line(line, CLANG_LIBS_ARM64);
         }
         else if (arch == Arch_X86)
         {
@@ -694,6 +713,9 @@ int main(int argc, char **argv){
 #if defined(DEV_BUILD_X86) || defined(OPT_BUILD_X86)
     arch = Arch_X86;
 #endif
+#if defined(__aarch64__)
+    arch = Arch_ARM64;
+#endif
     
 #if defined(DEV_BUILD) || defined(OPT_BUILD) || defined(DEV_BUILD_X86) || defined(OPT_BUILD_X86)
     standard_build(&arena, cdir, flags, arch);
@@ -706,6 +728,9 @@ int main(int argc, char **argv){
     
 #elif defined(PACKAGE_SUPER_X64)
     package(&arena, cdir, Tier_Super, Arch_X64);
+    
+#elif defined(PACKAGE_SUPER_ARM64)
+    package(&arena, cdir, Tier_Super, Arch_ARM64);
     
 #elif defined(PACKAGE_SUPER_X86)
     package(&arena, cdir, Tier_Super, Arch_X86);
