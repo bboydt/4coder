@@ -113,6 +113,7 @@ char *arch_names[] = {
 #define BUILD_DIR "../build"
 #define PACK_DIR "../distributions"
 #define SITE_DIR "../site"
+#define APP_DIR "../4coder.app"
 
 #define FOREIGN "../4coder-non-source/foreign"
 #define FOREIGN_WIN "..\\4coder-non-source\\foreign"
@@ -695,6 +696,23 @@ package(Arena *arena, char *cdir, Tier_Code tier, Arch_Code arch){
     end_temp(temp);
 }
 
+internal void
+package_app(Arena *arena, char *cdir, Tier_Code tier, Arch_Code arch){
+    // NOTE(bbt): meta
+    // This does some extra copies after doing the normal packaging stuff
+    package(arena, cdir, tier, arch);
+    
+    char *arch_name  = arch_names[arch];
+    char *tier_name = tier_names[tier];
+    char *parent_dir = fm_str(arena, ".." SLASH "current_dist_", tier_name, "_", arch_name, SLASH "4coder");
+    char *macos_dir = fm_str(arena, APP_DIR SLASH "Contents" SLASH "MacOS");
+    
+    fm_make_folder_if_missing(arena, APP_DIR);
+    fm_make_folder_if_missing(arena, macos_dir);
+    fm_copy_all("ship_files_app", APP_DIR);
+    fm_copy_all(parent_dir, macos_dir);
+}
+
 int main(int argc, char **argv){
     Arena arena = fm_init_system(DetailLevel_FileOperations);
     
@@ -723,6 +741,9 @@ int main(int argc, char **argv){
 #elif defined(PACKAGE_DEMO_X64)
     package(&arena, cdir, Tier_Demo, Arch_X64);
     
+#elif defined(PACKAGE_DEMO_ARM64)
+    package(&arena, cdir, Tier_Demo, Arch_ARM64);
+    
 #elif defined(PACKAGE_DEMO_X86)
     package(&arena, cdir, Tier_Demo, Arch_X86);
     
@@ -731,6 +752,9 @@ int main(int argc, char **argv){
     
 #elif defined(PACKAGE_SUPER_ARM64)
     package(&arena, cdir, Tier_Super, Arch_ARM64);
+    
+#elif defined(PACKAGE_SUPER_ARM64_APP)
+    package_app(&arena, cdir, Tier_Super, Arch_ARM64);
     
 #elif defined(PACKAGE_SUPER_X86)
     package(&arena, cdir, Tier_Super, Arch_X86);
