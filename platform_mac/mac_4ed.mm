@@ -1418,7 +1418,7 @@ main(int arg_count, char **args){
         NSRect screen_rect = [[NSScreen mainScreen] frame];
         NSRect initial_frame = NSMakeRect((f32)(screen_rect.size.width - w) * 0.5f, (f32)(screen_rect.size.height - h) * 0.5f, w, h);
         
-        u32 style_mask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
+        u32 style_mask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable | NSWindowStyleMaskBorderless;
         
         mac_vars.window = [[NSWindow alloc] initWithContentRect:initial_frame
                            styleMask:style_mask
@@ -1432,6 +1432,10 @@ main(int arg_count, char **args){
         [mac_vars.window setBackgroundColor:NSColor.blackColor];
         [mac_vars.window setTitle:@"GRAPHICS"];
         [mac_vars.window setAcceptsMouseMovedEvents:YES];
+        [mac_vars.window setTitlebarAppearsTransparent:true];
+        [mac_vars.window setTitleVisibility:NSWindowTitleHidden];
+        //[mac_vars.window setTitleColor:NSColor.whiteColor];
+        
         
         NSView* content_view = [mac_vars.window contentView];
         
